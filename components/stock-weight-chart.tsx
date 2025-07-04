@@ -91,17 +91,34 @@ export default function StockWeightChart({ players, showKRW, usdToKrw }: StockWe
             outerRadius={80}
             paddingAngle={2}
             dataKey="weight"
+            label={({ cx, cy, midAngle, innerRadius, outerRadius, ticker, weight }) => {
+              const RADIAN = Math.PI / 180;
+              const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+              const x = cx + radius * Math.cos(-(midAngle || 0) * RADIAN);
+              const y = cy + radius * Math.sin(-(midAngle || 0) * RADIAN);
+              
+              return (
+                <text 
+                  x={x} 
+                  y={y} 
+                  fill="white" 
+                  textAnchor="middle" 
+                  dominantBaseline="central"
+                  fontSize="10"
+                  fontWeight="bold"
+                >
+                  <tspan x={x} dy="-0.5em">{ticker}</tspan>
+                  <tspan x={x} dy="1em">{weight.toFixed(1)}%</tspan>
+                </text>
+              );
+            }}
+            labelLine={false}
           >
             {stockWeights.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
           </Pie>
           <Tooltip content={<CustomTooltip showKRW={showKRW} usdToKrw={usdToKrw} />} />
-          <Legend 
-            formatter={(value, entry: any) => `${entry.payload.ticker} (${entry.payload.weight.toFixed(1)}%)`}
-            wrapperStyle={{ fontSize: '10px' }}
-            iconSize={8}
-          />
         </PieChart>
       </ResponsiveContainer>
     </div>

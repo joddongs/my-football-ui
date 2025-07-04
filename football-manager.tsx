@@ -1208,6 +1208,8 @@ export default function FootballManager() {
     return priceChange > 0 ? <TrendingUp size={12} /> : priceChange < 0 ? <TrendingDown size={12} /> : null
   }
 
+
+
   // 데이터 기준 시점
   const getDataTimestamp = () => {
     return {
@@ -1282,38 +1284,11 @@ export default function FootballManager() {
             </div>
 
             <div className="flex justify-center mt-1">
-              <Select
-                value={player.riskLevel}
-                onValueChange={(value: "low" | "medium" | "high") => handleRiskChange(player.id, value)}
-              >
-                <SelectTrigger className="w-6 h-6 p-0 border-0 bg-transparent">
-                  <div className={`w-3 h-3 rounded-full ${getRiskColor(player.riskLevel)}`} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="low">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-green-500 rounded-full" />
-                      <span>저위험</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="medium">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-yellow-500 rounded-full" />
-                      <span>중위험</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="high">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full" />
-                      <span>고위험</span>
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <div className={`w-3 h-3 rounded-full ${getRiskColor(player.riskLevel)}`} />
             </div>
 
             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-black text-white text-xs p-2 rounded shadow-lg whitespace-nowrap z-10">
-              <div>{player.name}</div>
+              <div className="font-medium mb-1">{player.name}</div>
               <div>
                 {player.shares}주 × {formatCurrency(player.currentPrice)}
               </div>
@@ -2237,12 +2212,12 @@ export default function FootballManager() {
                     <CardContent>
                       {/* 포지션별 비중과 종목별 비중 */}
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <div>
+                                                <div>
                           <div className="flex items-center gap-2 mb-3">
                             <Users size={16} className="text-green-600" />
                             <h4 className="font-semibold text-gray-700">포지션별 비중</h4>
                           </div>
-                                                    <div className="h-64">
+                          <div className="h-48">
                             <ResponsiveContainer width="100%" height="100%">
                               <PieChart>
                                 <Pie
@@ -2253,6 +2228,28 @@ export default function FootballManager() {
                                   outerRadius={80}
                                   paddingAngle={2}
                                   dataKey="value"
+                                  label={({ cx, cy, midAngle, innerRadius, outerRadius, name, percentage }) => {
+                                    const RADIAN = Math.PI / 180;
+                                    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+                                    const x = cx + radius * Math.cos(-(midAngle || 0) * RADIAN);
+                                    const y = cy + radius * Math.sin(-(midAngle || 0) * RADIAN);
+                                    
+                                    return (
+                                      <text 
+                                        x={x} 
+                                        y={y} 
+                                        fill="white" 
+                                        textAnchor="middle" 
+                                        dominantBaseline="central"
+                                        fontSize="10"
+                                        fontWeight="bold"
+                                      >
+                                        <tspan x={x} dy="-0.5em">{name}</tspan>
+                                        <tspan x={x} dy="1em">{percentage}%</tspan>
+                                      </text>
+                                    );
+                                  }}
+                                  labelLine={false}
                                 >
                                   {positionStats.pieData.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -2292,11 +2289,7 @@ export default function FootballManager() {
                                     return null
                                   }}
                                 />
-                                <Legend 
-                                  formatter={(value, entry: any) => `${value} (${entry.payload.percentage}%)`}
-                                  wrapperStyle={{ fontSize: '10px' }}
-                                  iconSize={8}
-                                />
+
                               </PieChart>
                             </ResponsiveContainer>
                           </div>
@@ -2307,7 +2300,7 @@ export default function FootballManager() {
                             <BarChart3 size={16} className="text-purple-600" />
                             <h4 className="font-semibold text-gray-700">종목별 비중</h4>
                           </div>
-                          <div className="h-64">
+                          <div className="h-48">
                             <StockWeightChart 
                               players={players} 
                               showKRW={showKRW} 

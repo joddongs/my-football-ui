@@ -136,7 +136,7 @@ export default function SectorWeightChart({ players, showKRW, usdToKrw }: Sector
   }
 
   return (
-    <div className="w-full relative">
+    <div className="w-full">
       <div className="flex items-center gap-2 mb-3">
         <Building2 size={16} className="text-indigo-600" />
         <h4 className="font-semibold text-gray-700">섹터별 비중</h4>
@@ -200,7 +200,7 @@ export default function SectorWeightChart({ players, showKRW, usdToKrw }: Sector
         )}
 
         {/* 섹터별 비중 정보 */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 text-xs flex-1">
           {sectorWeights.slice(0, 8).map((sector) => (
             <div 
               key={sector.sector} 
