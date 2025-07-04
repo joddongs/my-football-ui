@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { LogOut, User, LogIn } from "lucide-react"
 import { useAuth } from "../auth/auth-context"
+import Link from "next/link"
 
 interface HeaderProps {
   onLoginClick: () => void
@@ -15,10 +16,12 @@ export default function Header({ onLoginClick }: HeaderProps) {
     <div className="bg-white shadow-sm border-b">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-            <span className="text-2xl">⚽</span>
-                          Goalfolio
-          </h1>
+          <Link href="/" className="inline-block">
+            <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2 cursor-pointer hover:text-blue-600 transition-colors">
+              <span className="text-2xl">⚽</span>
+              Goalfolio
+            </h1>
+          </Link>
           <p className="text-sm text-gray-600">Football Manager 스타일로 포트폴리오를 구성해보세요</p>
         </div>
 

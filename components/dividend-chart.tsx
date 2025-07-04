@@ -4,7 +4,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, DollarSign, TrendingUp } from "lucide-react"
-import type { Player } from "../football-manager"
+import type { Player, Stock } from "../football-manager"
+import { IconType } from "react-icons"
+import React from "react"
 
 interface DividendChartProps {
   players: Player[]
@@ -274,28 +276,37 @@ export default function DividendChart({ players, showKRW, usdToKrw }: DividendCh
 
               return (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {stocksWithWeight.map((stock, index) => (
-                    <div key={stock.ticker} className="flex items-center gap-3 p-3 bg-white rounded-lg border hover:shadow-md transition-shadow">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-gray-500 w-6">#{index + 1}</span>
-                        <div 
-                          className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm"
-                          style={{ backgroundColor: stock.color }}
-                        >
-                          {stock.icon}
+                  {(stocksWithWeight as Stock[]).map((stock: Stock, index) => {
+                    let iconString: string | undefined = undefined;
+                    let IconComponent: IconType | undefined = undefined;
+                    if (typeof stock.icon === 'string') {
+                      iconString = stock.icon;
+                    } else if (typeof stock.icon === 'function') {
+                      IconComponent = stock.icon;
+                    }
+                    return (
+                      <div key={stock.ticker} className="flex items-center gap-3 p-3 bg-white rounded-lg border hover:shadow-md transition-shadow">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-gray-500 w-6">#{index + 1}</span>
+                          <div 
+                            className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm"
+                            style={{ backgroundColor: stock.color }}
+                          >
+                            {typeof iconString === 'string' && !!iconString ? <span>{iconString}</span> : IconComponent ? <IconComponent className="w-5 h-5" /> : null}
+                          </div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-sm truncate">{stock.ticker}</div>
+                          <div className="text-xs text-gray-500 truncate">{stock.name}</div>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-semibold text-sm">{formatCurrency(stock.annualDividend)}</div>
+                          <div className="text-xs text-gray-500">{stock.weight.toFixed(1)}%</div>
+                          <div className="text-xs text-green-600">{stock.dividendYield.toFixed(2)}%</div>
                         </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-sm truncate">{stock.ticker}</div>
-                        <div className="text-xs text-gray-500 truncate">{stock.name}</div>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-semibold text-sm">{formatCurrency(stock.annualDividend)}</div>
-                        <div className="text-xs text-gray-500">{stock.weight.toFixed(1)}%</div>
-                        <div className="text-xs text-green-600">{stock.dividendYield.toFixed(2)}%</div>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )
             })()}

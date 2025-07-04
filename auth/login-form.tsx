@@ -55,8 +55,9 @@ export default function LoginForm() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto w-fit flex items-center justify-center gap-2 mb-4">
             <span className="text-2xl">⚽</span>
+            <span className="text-xl font-bold text-gray-900">Goalfolio</span>
           </div>
           <CardTitle className="text-2xl font-bold">{isLogin ? "로그인" : "회원가입"}</CardTitle>
           <CardDescription>

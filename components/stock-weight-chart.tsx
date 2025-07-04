@@ -15,7 +15,7 @@ interface StockWeight {
   weight: number
   value: number
   color: string
-  icon: string
+  icon: string | import('react-icons').IconType
 }
 
 const CustomTooltip = ({ active, payload, showKRW, usdToKrw }: any) => {
@@ -35,7 +35,11 @@ const CustomTooltip = ({ active, payload, showKRW, usdToKrw }: any) => {
             className="w-5 h-5 rounded-full flex items-center justify-center text-white text-xs"
             style={{ backgroundColor: data.color }}
           >
-            {data.icon}
+            {typeof data.icon === 'string'
+              ? <span>{data.icon}</span>
+              : typeof data.icon === 'function'
+                ? (() => { const Icon = data.icon; return <Icon className="w-4 h-4" /> })()
+                : null}
           </div>
           <div>
             <p className="font-semibold text-sm">{data.ticker}</p>
