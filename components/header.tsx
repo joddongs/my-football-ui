@@ -17,7 +17,7 @@ export default function Header({ onLoginClick }: HeaderProps) {
         <div>
           <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <span className="text-2xl">⚽</span>
-            투자 포트폴리오 매니저
+                          Goalfolio
           </h1>
           <p className="text-sm text-gray-600">Football Manager 스타일로 포트폴리오를 구성해보세요</p>
         </div>

@@ -1945,8 +1945,8 @@ export default function FootballManager() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* 기본 통계 */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* 투자 현황 */}
                   <Card className="w-full">
                     <CardHeader className="pb-3">
                       <CardTitle className="flex items-center gap-2 text-lg">
@@ -2226,209 +2226,208 @@ export default function FootballManager() {
                   </CardContent>
                 </Card>
 
-                  {/* 비중 현황 */}
-                  <Card className="w-full">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="flex items-center gap-2 text-lg">
-                        <BarChart3 size={16} className="text-blue-600" />
-                        비중 현황
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      {/* 포지션별 비중과 종목별 비중 */}
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <div>
-                          <div className="flex items-center gap-2 mb-3">
-                            <Users size={16} className="text-green-600" />
-                            <h4 className="font-semibold text-gray-700">포지션별 비중</h4>
-                          </div>
-                                                    <div className="h-64">
-                            <ResponsiveContainer width="100%" height="100%">
-                              <PieChart>
-                                <Pie
-                                  data={positionStats.pieData}
-                                  cx="50%"
-                                  cy="50%"
-                                  innerRadius={40}
-                                  outerRadius={80}
-                                  paddingAngle={2}
-                                  dataKey="value"
-                                >
-                                  {positionStats.pieData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={entry.color} />
-                                  ))}
-                                </Pie>
-                                <RechartsTooltip
-                                  content={({ active, payload }) => {
-                                    if (active && payload && payload.length) {
-                                      const data = payload[0].payload
-                                      return (
-                                        <div className="p-3 bg-white border border-gray-200 rounded-lg shadow-lg">
-                                          <div className="flex items-center gap-2 mb-2">
-                                            <div 
-                                              className="w-5 h-5 rounded-full flex items-center justify-center text-white text-xs"
-                                              style={{ backgroundColor: data.color }}
-                                            >
-                                              {data.icon}
-                                            </div>
-                                            <div>
-                                              <p className="font-semibold text-sm">{data.name}</p>
-                                            </div>
+                {/* 비중 현황 */}
+                <Card className="w-full">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      <BarChart3 size={16} className="text-blue-600" />
+                      비중 현황
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {/* 포지션별 비중과 종목별 비중 */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                      <div>
+                        <div className="flex items-center gap-2 mb-3">
+                          <Users size={16} className="text-green-600" />
+                          <h4 className="font-semibold text-gray-700">포지션별 비중</h4>
+                        </div>
+                        <div className="h-64">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                              <Pie
+                                data={positionStats.pieData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={40}
+                                outerRadius={80}
+                                paddingAngle={2}
+                                dataKey="value"
+                              >
+                                {positionStats.pieData.map((entry, index) => (
+                                  <Cell key={`cell-${index}`} fill={entry.color} />
+                                ))}
+                              </Pie>
+                              <RechartsTooltip
+                                content={({ active, payload }) => {
+                                  if (active && payload && payload.length) {
+                                    const data = payload[0].payload
+                                    return (
+                                      <div className="p-3 bg-white border border-gray-200 rounded-lg shadow-lg">
+                                        <div className="flex items-center gap-2 mb-2">
+                                          <div 
+                                            className="w-5 h-5 rounded-full flex items-center justify-center text-white text-xs"
+                                            style={{ backgroundColor: data.color }}
+                                          >
+                                            {data.icon}
                                           </div>
-                                          
-                                          <div className="space-y-1 text-xs">
-                                            <div className="flex justify-between">
-                                              <span className="text-gray-600">비중:</span>
-                                              <span className="font-semibold">{data.percentage}%</span>
-                                            </div>
-                                            <div className="flex justify-between">
-                                              <span className="text-gray-600">가치:</span>
-                                              <span className="font-medium">{formatCurrency(data.value)}</span>
-                                            </div>
+                                          <div>
+                                            <p className="font-semibold text-sm">{data.name}</p>
                                           </div>
                                         </div>
-                                      )
-                                    }
-                                    return null
-                                  }}
-                                />
-                                <Legend 
-                                  formatter={(value, entry: any) => `${value} (${entry.payload.percentage}%)`}
-                                  wrapperStyle={{ fontSize: '10px' }}
-                                  iconSize={8}
-                                />
-                              </PieChart>
-                            </ResponsiveContainer>
-                          </div>
+                                        
+                                        <div className="space-y-1 text-xs">
+                                          <div className="flex justify-between">
+                                            <span className="text-gray-600">비중:</span>
+                                            <span className="font-semibold">{data.percentage}%</span>
+                                          </div>
+                                          <div className="flex justify-between">
+                                            <span className="text-gray-600">가치:</span>
+                                            <span className="font-medium">{formatCurrency(data.value)}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    )
+                                  }
+                                  return null
+                                }}
+                              />
+                              <Legend 
+                                formatter={(value, entry: any) => `${value} (${entry.payload.percentage}%)`}
+                                wrapperStyle={{ fontSize: '10px' }}
+                                iconSize={8}
+                              />
+                            </PieChart>
+                          </ResponsiveContainer>
                         </div>
+                      </div>
                         
-                        <div>
-                          <div className="flex items-center gap-2 mb-3">
-                            <BarChart3 size={16} className="text-purple-600" />
-                            <h4 className="font-semibold text-gray-700">종목별 비중</h4>
-                          </div>
-                          <div className="h-64">
-                            <StockWeightChart 
-                              players={players} 
-                              showKRW={showKRW} 
-                              usdToKrw={usdToKrw} 
-                            />
-                          </div>
+                      <div>
+                        <div className="flex items-center gap-2 mb-3">
+                          <BarChart3 size={16} className="text-purple-600" />
+                          <h4 className="font-semibold text-gray-700">종목별 비중</h4>
+                        </div>
+                        <div className="h-64">
+                          <StockWeightChart 
+                            players={players} 
+                            showKRW={showKRW} 
+                            usdToKrw={usdToKrw} 
+                          />
                         </div>
                       </div>
+                    </div>
 
-                      {/* 섹터별 비중 차트 */}
-                      <div>
-                        <SectorWeightChart 
-                          players={players} 
-                          showKRW={showKRW} 
-                          usdToKrw={usdToKrw} 
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
+                    {/* 섹터별 비중 차트 */}
+                    <div>
+                      <SectorWeightChart 
+                        players={players} 
+                        showKRW={showKRW} 
+                        usdToKrw={usdToKrw} 
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* 배당 차트 - 전체 너비 */}
+              <div className="mt-6">
+                <DividendChart 
+                  players={players} 
+                  showKRW={showKRW} 
+                  usdToKrw={usdToKrw} 
+                />
+              </div>
+            </div>
+          )}
+
+          {/* 푸터 */}
+          <footer className="bg-gray-50 border-t mt-12">
+            <div className="max-w-7xl mx-auto px-4 py-8">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* 서비스 정보 */}
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <BarChart3 size={20} className="text-blue-600" />
+                    <h3 className="font-semibold text-lg">Football Portfolio</h3>
+                  </div>
+                  <p className="text-gray-600 text-sm mb-4">
+                    축구 경기 형식을 활용한 직관적인 포트폴리오 관리 서비스입니다.
+                    투자 현황을 한눈에 파악하고 효율적으로 관리하세요.
+                  </p>
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <Mail size={14} />
+                    <span>문의: joddong@gmail.com</span>
+                  </div>
                 </div>
 
-                {/* 배당 차트 - 전체 너비 */}
-                <div className="mt-6">
-                  <DividendChart 
-                    players={players} 
-                    showKRW={showKRW} 
-                    usdToKrw={usdToKrw} 
-                  />
+                {/* 서비스 링크 */}
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-4">서비스</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li>
+                      <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
+                        포트폴리오 관리
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
+                        실시간 시세
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
+                        배당 분석
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
+                        리스크 관리
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* 법적 정보 */}
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-4">법적 정보</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li>
+                      <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
+                        서비스 이용약관
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
+                        개인정보 처리방침
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
+                        투자 위험 고지
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
+                        면책 조항
+                      </a>
+                    </li>
+                  </ul>
                 </div>
               </div>
-            )}
-          </div>
+
+              {/* 저작권 */}
+              <div className="border-t border-gray-200 mt-8 pt-6">
+                <div className="flex flex-col lg:flex-row justify-between items-center text-sm text-gray-500">
+                  <p>&copy; 2024 Football Portfolio. All rights reserved.</p>
+                  <p className="mt-2 lg:mt-0 text-center lg:text-right">
+                    본 서비스는 투자 조언을 제공하지 않으며, 투자 결정은 사용자의 판단에 따라 이루어져야 합니다.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </footer>
         </div>
       </main>
-
-      {/* 푸터 */}
-      <footer className="bg-gray-50 border-t mt-12">
-        <div className="max-w-4xl mx-auto px-6 py-8">
-          <div className="flex flex-col lg:flex-row justify-between items-start gap-8">
-            {/* 서비스 정보 */}
-            <div className="lg:w-1/3">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">⚽</span>
-                <h3 className="font-semibold text-lg">Goalfolio</h3>
-              </div>
-              <p className="text-gray-600 text-sm mb-4">
-                자산 목표(Goal) 달성을 위한 투자 포트폴리오를 축구 경기 형식으로 관리하는 서비스입니다.
-                투자 현황을 한눈에 파악하고 효율적으로 관리하세요.
-              </p>
-              <div className="flex items-center gap-2 text-sm text-gray-500">
-                <Mail size={14} />
-                <span>문의: joddong@gmail.com</span>
-              </div>
-            </div>
-
-            {/* 서비스 링크 */}
-            <div className="lg:w-1/4">
-              <h4 className="font-semibold text-gray-900 mb-4">서비스</h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
-                    포트폴리오 관리
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
-                    실시간 시세
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
-                    배당 분석
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
-                    리스크 관리
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* 법적 정보 */}
-            <div className="lg:w-1/4">
-              <h4 className="font-semibold text-gray-900 mb-4">법적 정보</h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
-                    서비스 이용약관
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
-                    개인정보 처리방침
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
-                    투자 위험 고지
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
-                    면책 조항
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* 저작권 */}
-          <div className="border-t border-gray-200 mt-6 pt-6">
-            <div className="flex flex-col lg:flex-row justify-center items-center text-sm text-gray-500 text-center gap-2">
-              <p>&copy; 2024 Goalfolio. All rights reserved.</p>
-              <p className="mt-2 lg:mt-0">
-                본 서비스는 투자 조언을 제공하지 않으며, 투자 결정은 사용자의 판단에 따라 이루어져야 합니다.
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer>
     </TooltipProvider>
   )
 }
